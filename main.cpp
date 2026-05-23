@@ -4,13 +4,17 @@
 
 using namespace std;
 
-// So pra dar uma mensagem de inicio mais bonitinha e separada
+// função pra converter decimal em binario
  void decimal_binario(int inteiro, double fracao, bool temFracao){
 
     int  inteirovt [16], fracaovt [16], i=0;
     int  c=0; // contador
 
-  
+  if (inteiro == 0) {
+        inteirovt[0] = 0;
+        i = 1;
+        //if para o programa não dar erro caso a parte inteira seja 0 
+     } else {
     
     // trasformar em binario a parte inteira
     while (inteiro>0){
@@ -18,6 +22,7 @@ using namespace std;
         inteiro = inteiro/2;
         i++;
     }
+}
     // trasformar em binario a parte decimal
     while (fracao>0 && c<16){
         fracao= fracao*2;
@@ -26,11 +31,13 @@ using namespace std;
         c++;
     }
 
-    cout<<"Seu numero em binario e:";
-       // caso inteiro seja 0
-    if (i == 0){
-        cout << "0";
+
+     if (fracao>0){
+        cout<< endl  <<" Seu numero ultrapassou 16 numeros apos a virgula causando um truncamento"<<endl;
+
     }
+
+    cout<<"Seu numero em binario e: ";
 
    for (int k = i - 1; k >= 0; k--) {
     cout << inteirovt[k];
@@ -42,14 +49,110 @@ if (temFracao){
     for (int k = 0; k < c; k++) {
         cout << fracaovt[k];
     }
-    if (fracao>0){
-        cout<< endl  <<" Seu numero ultrapassou 16 numeros apos a virgula causando um truncamento"<<endl;
+
+   }
+}
+
+
+
+//Função para fazer  decimal para octa
+void decimal_octa(int inteiro, double fracao, bool temFracao){
+
+    int  inteirovt [16], fracaovt [16], i=0;
+    int  c=0; // contador
+
+     if (inteiro == 0) {
+        inteirovt[0] = 0;
+        i = 1;
+        //if para o programa não dar erro caso a parte inteira seja 0 
+     } else {
+
+    // trasformar em binario a parte inteira
+    while (inteiro>0){
+        inteirovt[i] = inteiro%8;
+        inteiro = inteiro/8;
+        i++;
+    }
+}
+    // trasformar em octal a parte decimal
+    while (fracao>0 && c<16){
+        fracao= fracao*8;
+        fracaovt[c] = (int)fracao;
+        fracao = fracao - fracaovt [c];
+        c++;
     }
 
+   if (fracao>0){
+        cout<< endl  <<" Seu numero ultrapassou 16 numeros apos a virgula causando um truncamento"<<endl;
+   }
+    cout<<"Seu numero em octal e: ";
+   
+   
+   for (int k = i - 1; k >= 0; k--) {
+    cout << inteirovt[k];
+    }
+
+    if (temFracao){
+    cout << ".";
+
+    for (int k = 0; k < c; k++) {
+        cout << fracaovt[k];
+    }
+    
     }
     
 }
 
+
+void decimal_hexa(int inteiro, double fracao, bool temFracao){
+//função pra converter decimal pra hexadecimal. achei que 1000 linhas fazia tudo eu nem terminei o conversor e ja tem umas 300 ;-;
+    int  inteirovt [16], fracaovt [16], i=0;
+    int  c=0; // contador
+
+    // guia pro programa escrever em hexa
+    char tabela_hexa [] = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
+
+     if (inteiro == 0) {
+        inteirovt[0] = 0;
+        i = 1;
+        //if para o programa não dar erro caso a parte inteira seja 0 
+     } else {
+
+    // trasformar em binario a parte inteira
+    while (inteiro>0){
+        inteirovt[i] = inteiro%16;
+        inteiro = inteiro/16;
+        i++;
+    }
+}
+    // trasformar em octal a parte decimal
+    while (fracao>0 && c<16){
+        fracao= fracao*16;
+        fracaovt[c] = (int)fracao;
+        fracao = fracao - fracaovt [c];
+        c++;
+    }
+
+   if (fracao>0){
+        cout<< endl  <<" Seu numero ultrapassou 16 numeros apos a virgula causando um truncamento"<<endl;
+   }
+    cout<<"Seu numero em hexadecimal e: ";
+   
+   
+   for (int k = i - 1; k >= 0; k--) {
+  cout << tabela_hexa[inteirovt[k]];
+    }
+
+    if (temFracao){
+    cout << ".";
+
+    for (int k = 0; k < c; k++) {
+       cout << tabela_hexa[fracaovt[k]];
+    }
+    
+    }
+    
+}
 
 //função para chamar as conversoões de binario octa e hexa
 void converterdecimal (){
@@ -67,8 +170,8 @@ void converterdecimal (){
     bool temFracao = (fracao > 0); // para salvar a informação original se havia numeros apos o . ou a ,
 
         decimal_binario ( inteiro, fracao, temFracao);
-        decimal_octa(); // ainda n ta feita
-        decimal_hexa (); //ainda n ta feita
+        decimal_octa( inteiro, fracao, temFracao); 
+        decimal_hexa ( inteiro, fracao, temFracao);
 
 }
 
