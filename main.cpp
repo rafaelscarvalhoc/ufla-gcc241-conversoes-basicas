@@ -202,72 +202,233 @@ void converterdecimal (){
 //=================================================================================================================================================
 //=================================================================================================================================================
 //=================================================================================================================================================
-void  binario_decimal(){
+void  binario_decimal(string entrada){
+
+int fim_inteiro=0 , potencia_inteiro = 0, potencia_fracao = 0 , digito=0;
+int casa_decimais = 0 ; //trava pra caso passe de 16 casas decimais 
+int posicao_ponto = -1; 
+//fica como menos 1 pq inicalmente eu to falando pro programa que esse ponto n exite.
+//caso o ponto seja achado o posição ponto deve assumir aquele lugar,
+// assim marcando onde se encontra o ponto 
+bool e_binario = true; // isso e pra conferir se o numero se encaixa no binario, ele podendo ser 0 1 , ou . 
+double resultado_decimal = 0.0;
+
+for (int i=0; i< entrada.length(); i++){ //.lenght ele mede quantos caracteres tem a string e me fala o tamanho dela 
+    if (entrada [i] != '0' && entrada [i] != '1'&& entrada [i] != ',' && entrada [i] != '.'){
+        e_binario = false;
+    }
+
+    if (entrada[i]== '.' || entrada[i]== ',' ){// lembrar dos ' '
+        posicao_ponto = i;
+    }
+    }
+    if (e_binario == false){
+        cout<< "O numero digitado não pode ser convertido pois o mesmo não faz parte do sistem binario"<<endl;
+    }
+    else {
+
+      // descobrir o final da parte inteira
+        if (posicao_ponto == -1) {
+            fim_inteiro = entrada.length(); // Se não tem ponto o fim e o fim do string entrada msm
+        } else {
+            fim_inteiro = posicao_ponto;   // Se tem ponto para no ponto
+        }
+
+        for (int k = fim_inteiro - 1; k >= 0; k--) {
+            // legal esse metodo abaixo o computador guarda cada caracter em um numero ex:carcter zero =48 caracter 1 = 49. ent se voce tirar 
+            // o carcter 0 (48) sobra so o numero puro ficando por exemplo carcter 1 - caracter 0 = numero 1
+             digito = entrada[k] - '0'; 
+            resultado_decimal = resultado_decimal + (digito * pow(2, potencia_inteiro)); 
+            //A função pow faz (base, expoente) serve para elevar um número ao outro, sendo ela da biblioteca cmath. 
+            //Ela precisa que você coloque dois valores dentro dos parênteses, separados por vírgula o primeiro e a base o 2 a potencia.
+            potencia_inteiro++; // Vai subindo a potencia 0, 1, 2, ...
+        }
+        if(posicao_ponto != -1) {
+         potencia_fracao = -1;
+            for (int k = posicao_ponto + 1; k < entrada.length(); k++) {
+                if (casa_decimais >= 16) {
+                    cout << endl <<"Sua entrada gerou um resultado que ultrapassou 16 casas decimais, causando um truncamento"; // uma pena meu nobre hihi
+                        k = entrada.length(); // truque pra o for parar caso tenha passado
+                }
+                else {
+                     digito = entrada[k] - '0'; // mesma logica de trasformar carcter em numero
+                    resultado_decimal = resultado_decimal + (digito * pow(2, potencia_fracao));// mesmo que o 1 so mudando a potencia que e negativa como visto abaixo
+                potencia_fracao--;
+                casa_decimais++;
+                }
+                
+            }
+        }
+        cout << "O numero convertido para decimal e: " << resultado_decimal << endl;    
+    }
+}
+
+
+void  octal_decimal(string entrada){ // como octal so muda a base o codigo pode ser copiado mudando so a base
+int fim_inteiro=0 , potencia_inteiro = 0, potencia_fracao = 0 , digito=0, posicao_ponto = -1, casa_decimais = 0; 
+bool e_octal = true;
+double resultado_decimal = 0.0;
+
+for (int i=0; i< entrada.length(); i++){ //.lenght ele mede quantos caracteres tem a string e me fala o tamanho dela 
+    if ((entrada [i] < '0' || entrada [i] > '7')&& entrada [i] != ',' && entrada [i] != '.'){ // && significa e || significa ou 
+// mesma logica do diminuir um carcter zero, o programa ja entende as letras e o intervalo delas logo n e presciso "traduzir"
+       e_octal = false;
+    }
+
+    if (entrada[i]== '.' || entrada[i]== ',' ){// lembrar dos ' '
+        posicao_ponto = i;
+    }
+    }
+    if (e_octal == false){
+        cout<< "O numero digitado não pode ser convertido pois o mesmo não faz parte do sistem octal"<<endl;
+    }
+    else {
+
+      // descobrir o final da parte inteira
+        if (posicao_ponto == -1) {
+            fim_inteiro = entrada.length(); 
+        } else {
+            fim_inteiro = posicao_ponto;   
+        }
+
+        for (int k = fim_inteiro - 1; k >= 0; k--) {
+             digito = entrada[k] - '0'; 
+            resultado_decimal = resultado_decimal + (digito * pow(8, potencia_inteiro)); 
+         potencia_inteiro++;
+        }
+        if(posicao_ponto != -1) {
+         potencia_fracao = -1;
+            for (int k = posicao_ponto + 1; k < entrada.length(); k++) {
+                if (casa_decimais >= 16) {
+                    cout << endl <<"Sua entrada gerou um resultado que ultrapassou o limite de 16 casas decimais, causando um truncamento"; // to sendo sabotado to programando lembrando da musica qual o plural de decimal? decimais decimais
+                        k = entrada.length(); 
+                }
+                else {
+                     digito = entrada[k] - '0'; 
+                    resultado_decimal = resultado_decimal + (digito * pow(8, potencia_fracao));
+                potencia_fracao--;
+                casa_decimais++;
+                }
+                
+            }
+        }
+        cout << "O numero convertido para decimal e: " << resultado_decimal << endl;    
+    }
+}
+
+void hexa_decimal(string entrada){
+
+int fim_inteiro=0 , potencia_inteiro = 0, potencia_fracao = 0 , digito=0, posicao_ponto = -1, casa_decimais = 0; 
+bool e_hexa = true;
+double resultado_decimal = 0.0;
+char c;
+// Criamos uma condição que diz tudo o que é em hexa
+for (int i=0; i< entrada.length(); i++){ 
+bool caractere_valido = (entrada[i] >= '0' && entrada[i] <= '9') ||
+                        (entrada[i] >= 'A' && entrada[i] <= 'F') ||
+                        (entrada[i] >= 'a' && entrada[i] <= 'f') ||
+                        (entrada[i] == '.') || (entrada[i] == ',');
+
+    if (!caractere_valido) {
+        e_hexa = false;
+    }
+    if (entrada[i]== '.' || entrada[i]== ',' ){
+        posicao_ponto = i;
+    }
+}
     
-    string entrada;
+    if (e_hexa == false){
+        cout<< "O numero digitado não pode ser convertido pois o mesmo não faz parte do sistem hexadecimal"<<endl;
+    }
+    else {
 
-    cout<< "Por favor digite a sua entrada em binario: "<<endl;
-    cin>>entrada;
+     
+        if (posicao_ponto == -1) {
+            fim_inteiro = entrada.length(); 
+        } else {
+            fim_inteiro = posicao_ponto;   
+        }
 
+        for (int k = fim_inteiro - 1; k >= 0; k--) {
+             c = entrada[k]; // Pega o caractere atual para facilitar a análise
 
-
-
-
-
-
+if (c >= '0' && c <= '9') {
+    digito = c - '0'; // Se for número de 0 a 9, faz o truque clássico
+} 
+else if (c >= 'A' && c <= 'F') {
+    digito = c - 'A' + 10; // Se for maiúscula (A-F), calcula a partir do 10
+} 
+else if (c >= 'a' && c <= 'f') {
+    digito = c - 'a' + 10; // Se for minúscula (a-f), calcula a partir do 10
 }
-
-void  octal_decimal(){
-
-
-
-
-
-
-
-}
-void hexa_decimal(){
-
-
-
-
-
-
-
-}
-
+            resultado_decimal = resultado_decimal + (digito * pow(16, potencia_inteiro)); 
+         potencia_inteiro++;
+        }
+        // parte fracionada
+        if(posicao_ponto != -1) {
+         potencia_fracao = -1;
+            for (int k = posicao_ponto + 1; k < entrada.length(); k++) {
+                if (casa_decimais >= 16) {
+                    cout << endl <<"Sua entrada gerou uma resposta que ultrapassou 16 casas decimais, causando um truncamento"; 
+                    k = entrada.length();
+                }
+                else {
+                    c = entrada[k]; // Pegamos o caractere atual da fração para analisar
+    
+    // O tradutor entrou aqui para salvar o dia caso o caractere seja uma letra!
+                    if (c >= '0' && c <= '9') {
+                         digito = c - '0'; 
+                    } 
+                    else if (c >= 'A' && c <= 'F') {
+                    digito = c - 'A' + 10; 
+                    } 
+                    else if (c >= 'a' && c <= 'f') {
+                     digito = c - 'a' + 10; 
+                    }                    
+                resultado_decimal = resultado_decimal + (digito * pow(16, potencia_fracao));
+                potencia_fracao--;
+                casa_decimais++;
+                }
+                
+            }
+        }
+        cout << "O numero convertido para decimal e: " << resultado_decimal << endl;    
+    }
+ }
 
 //função para chamar as conversoões de binario octa e hexa
-
-
 void converter_para_decimal(){
      char escolha;
+     string entrada;
 
     cout<<" Qual seu tipo de entrada?"<<endl;
     cout<<"Caso seja binario digite a letra A."<<endl;
     cout<<"Caso seja octal digite a letra B."<<endl;
     cout<<"Caso seja hexadecimal digite a letra C."<<endl;
+    cin>>escolha;
+    cout<< "Agora digite a sua entrada: ";
+    cin>>entrada;
 
  switch (escolha){
         case 'a':
         case 'A':
 
-        binario_decimal(); // conta escolhida do usuario
+        binario_decimal(entrada); // conta escolhida do usuario
         break; //Para parar o codigo 
 
         case 'b':
         case 'B':
 
-       octal_decimal();
+       octal_decimal(entrada);
         break;
 
         case 'c':
         case 'C':
-        hexa_decimal();
+        hexa_decimal(entrada);
         break;
 
     default:
-        cout<<"Opção invalida, p.or favor tente novamente";
+        cout<<"Opção invalida, por favor tente novamente";
         break;
 
 
@@ -276,15 +437,13 @@ void converter_para_decimal(){
 }
 
 
-
-
-
-
-
-
-
-
-
+// conversãoes E MENU da letra B do menu  conversor EM  CIMA
+//=================================================================================================================================================
+//=================================================================================================================================================
+//=================================================================================================================================================
+//=================================================================================================================================================
+//=================================================================================================================================================
+//=================================================================================================================================================
 
 
 void conversor(){ 
