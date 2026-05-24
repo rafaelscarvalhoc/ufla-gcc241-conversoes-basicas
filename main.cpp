@@ -4,6 +4,16 @@
 
 using namespace std;
 
+// conversão E MENU da letra a do menu  conversor
+//================================================================================================================================
+//================================================================================================================================
+//================================================================================================================================
+//================================================================================================================================
+
+
+
+
+
 // função pra converter decimal em binario
  void decimal_binario(int inteiro, double fracao, bool temFracao){
 
@@ -175,8 +185,110 @@ void converterdecimal (){
 
 }
 
+// conversão E MENU da letra a do menu  conversor EM CIMA
+//================================================================================================================================
+//================================================================================================================================
+//================================================================================================================================
+//================================================================================================================================
+
+
+
+
+
+// conversãoes E MENU da letra B do menu  conversor EM BAIXO
+//=================================================================================================================================================
+//=================================================================================================================================================
+//=================================================================================================================================================
+//=================================================================================================================================================
+//=================================================================================================================================================
+//=================================================================================================================================================
+void  binario_decimal(){
+    
+    string entrada;
+
+    cout<< "Por favor digite a sua entrada em binario: "<<endl;
+    cin>>entrada;
+
+
+
+
+
+
+
+}
+
+void  octal_decimal(){
+
+
+
+
+
+
+
+}
+void hexa_decimal(){
+
+
+
+
+
+
+
+}
+
+
+//função para chamar as conversoões de binario octa e hexa
+
+
+void converter_para_decimal(){
+     char escolha;
+
+    cout<<" Qual seu tipo de entrada?"<<endl;
+    cout<<"Caso seja binario digite a letra A."<<endl;
+    cout<<"Caso seja octal digite a letra B."<<endl;
+    cout<<"Caso seja hexadecimal digite a letra C."<<endl;
+
+ switch (escolha){
+        case 'a':
+        case 'A':
+
+        binario_decimal(); // conta escolhida do usuario
+        break; //Para parar o codigo 
+
+        case 'b':
+        case 'B':
+
+       octal_decimal();
+        break;
+
+        case 'c':
+        case 'C':
+        hexa_decimal();
+        break;
+
+    default:
+        cout<<"Opção invalida, p.or favor tente novamente";
+        break;
+
+
+
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 void conversor(){ 
+
 // função para o usuario escolher qual conversor e de seu desejo 
 
     char escolha;
@@ -221,7 +333,7 @@ void conversor(){
 
         // Trava para caso o usuario escolha uma opção não suportada.
         default:
-        cout<<"opção invalida, p.or favor tente novamente";
+        cout<<"Opção invalida, por favor tente novamente";
         break;
     }
 }
