@@ -458,6 +458,7 @@ void binario_octa (string entrada, char tipo_entradaA){
 int posicao_ponto = -1; 
 string inteiro, fracao; 
 bool e_fracao=false;
+string tabela_binario[] = {"000", "001", "010", "011", "100", "101", "110", "111"};
 
 for (int i=0; i< entrada.length(); i++){
 
@@ -475,60 +476,170 @@ for (int i=0; i< entrada.length(); i++){
         fracao = entrada.substr(posicao_ponto + 1);
         e_fracao=true;
         }
-        // apos separar nossa entrada começamos a conversão
-    if(e_fracao == false){
-    while (inteiro.length() % 3 != 0) {
-        inteiro = "0" + inteiro;
+
+
+    // Caso tenha escolhido  entrada em modo binario
+if (tipo_entradaA == 'A' || tipo_entradaA =='a'){
+    while (inteiro.length() % 3 != 0){ // Basicamente enquanto a divisao da entrada por 3 n for zero ele adiciona zero 
+        inteiro= "0" + inteiro;
     }
-    }
-    else{
 
-    }
-    }   
-
-
-void binario_hexa(string entrada, char tipo_entradaB){
-int posicao_ponto = -1; 
-string inteiro, fracao; 
-bool e_fracao=false;
-
-for (int i=0; i< entrada.length(); i++){
-
-    if (entrada[i]== '.' || entrada[i]== ',' ){// lembrar dos ' '
-        posicao_ponto = i;
-    }    
-}
-    if (posicao_ponto == -1) {
-            inteiro = entrada;
-            fracao= "";
-        } 
-    else {
-        inteiro = entrada.substr(0, posicao_ponto); // o substr funciona assim (inicio, tamanho do corte)
-        fracao = entrada.substr(posicao_ponto + 1);
-        e_fracao=true;
+if(e_fracao){
+    while (fracao.length() % 3 != 0) { // mesma coisa so que pra parte fracionada
+                fracao = fracao + "0";
+            } 
         }
 
+cout << "Resultado em Octal: ";
 
+        // Passo 2: Fatiar e traduzir a parte inteira (pulando de 3 em 3)
+        for (int i = 0; i < inteiro.length(); i += 3) {
+            string grupo = inteiro.substr(i, 3);
+            for (int j = 0; j < 8; j++) {
+                if (tabela_binario[j] == grupo) cout << j; // basicamente pega o numero joga na tabela e faz o cout e repete ate acabar
+            }
+        }
 
+        // Passo 3: Fatiar e traduzir a parte fracionária igual em cima
+        if (e_fracao) {
+            cout << ".";
+            for (int i = 0; i < fracao.length(); i += 3) {
+                string grupo = fracao.substr(i, 3);
+                for (int j = 0; j < 8; j++) {
+                    if (tabela_binario[j] == grupo) cout << j;
+                }
+            }
+        }
+        cout << endl;
+    }
+    else{
+// caso a entrada seja em octal
 
+        cout << "Resultado em Binario: ";
+
+        for (int i = 0; i < inteiro.length(); i++) {
+            int indice = inteiro[i] - '0'; 
+            cout << tabela_binario[indice];
+        }
+
+        if (e_fracao) {
+            cout << ".";
+            for (int i = 0; i < fracao.length(); i++) {
+                int indice = fracao[i] - '0';
+                cout << tabela_binario[indice];
+            }
+        }
+        cout << endl;
+    }
+}
+
+void binario_hexa(string entrada, char tipo_entradaB){
+    int posicao_ponto = -1; 
+    string inteiro, fracao; 
+    bool e_fracao = false;
+    string tabela_binario[] = {
+        "0000", "0001", "0010", "0011", "0100", "0101", "0110", "0111",
+        "1000", "1001", "1010", "1011", "1100", "1101", "1110", "1111"
+    };
+    string letras = "ABCDEF"; 
+// basicamente quase igual o de cima so adicionando a conversao de 10=a 11=b etc e mudando o agrupamento de 3 pra 4
+
+    // Descobre se tem ponto ou vírgula
+    for (int i = 0; i < entrada.length(); i++){
+        if (entrada[i] == '.' || entrada[i] == ',' ){
+            posicao_ponto = i;
+        }    
+    }
+
+    if (posicao_ponto == -1) {
+        inteiro = entrada;
+        fracao = "";
+    } 
+    else {
+        inteiro = entrada.substr(0, posicao_ponto); 
+        fracao = entrada.substr(posicao_ponto + 1);
+        e_fracao = true;
+    }
+
+    // Caso tenha escolhido entrada em modo binario
+    if (tipo_entradaB == 'A' || tipo_entradaB =='a'){
+        while (inteiro.length() % 4 != 0){
+            inteiro = "0" + inteiro;
+        }
+
+        if(e_fracao){
+            while (fracao.length() % 4 != 0) {
+                fracao = fracao + "0";
+            } 
+        }
+
+        cout << "Resultado em hexadecimal: ";
+
+        for (int i = 0; i < inteiro.length(); i += 4) {
+            string grupo = inteiro.substr(i, 4);
+            for (int j = 0; j < 16; j++) {
+                if (tabela_binario[j] == grupo){
+                    if (j < 10) cout << j;
+                    else cout << letras[j - 10];
+                }
+            }
+        }
+
+        if (e_fracao) {
+            cout << ".";
+            for (int i = 0; i < fracao.length(); i += 4) {
+                string grupo = fracao.substr(i, 4);
+                for (int j = 0; j < 16; j++) {
+                    if (tabela_binario[j] == grupo){
+                        if (j < 10) cout << j;
+                        else cout << letras[j - 10];
+                    }
+                }
+            }
+        }
+        cout << endl;
+    }
+    else {
+        // Caso a entrada seja em HEXADECIMAL (Hexa -> Binário)
+        cout << "Resultado em Binario: ";
+
+        //trasforma a parte inteira
+        for (int i = 0; i < inteiro.length(); i++) {
+            int indice; 
+            char atual = toupper(inteiro[i]); 
+
+            if (atual >= '0' && atual <= '9') {
+                indice = atual - '0';
+            } else {
+                indice = atual - 'A' + 10;
+            }
+            cout << tabela_binario[indice];
+        } 
+
+        // trasforma a parte fracionada 
+        if (e_fracao) {
+            cout << ".";
+            for (int i = 0; i < fracao.length(); i++) {
+                int indice;
+                char atual = toupper(fracao[i]);
+
+                if (atual >= '0' && atual <= '9') {
+                    indice = atual - '0';
+                } else {
+                    indice = atual - 'A' + 10;
+                }
+                cout << tabela_binario[indice];
+            }
+        }
+        cout << endl;
+    }
 }
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+    
 
 
 void converter_bo_bh(){
@@ -546,14 +657,25 @@ cout<<"Sua entrada e binaria ou octal?"<<endl;
 cout<<"Letra A caso sua entrada seja binaria"<<endl;
 cout<<"Letra B caso sua entrada seja octal"<<endl;
 cin>>tipo_entradaA;
+    if (tipo_entradaA != 'A' && tipo_entradaA != 'a' && tipo_entradaA != 'B' && tipo_entradaA != 'b'){
+        cout <<" Sua escolha não e uma opção. Por favor tente novamente"<<endl;
+        return;
+    }
 }
 else if (modo == 'b'|| modo == 'B'){
 cout<<"Sua entrada e binaria ou hexadecimal?"<<endl;
 cout<<"Letra A caso sua entrada seja binaria"<<endl;
 cout<<"Letra B caso sua entrada seja hexadecimal"<<endl;
 cin>>tipo_entradaB;
+    if (tipo_entradaB != 'A' && tipo_entradaB != 'a' && tipo_entradaB != 'B' && tipo_entradaB != 'b'){
+        cout <<" Sua escolha não e uma opção. Por favor tente novamente"<<endl;
+        return;
+    }
 }
-
+else{
+    cout<<endl<<"Opção invelida, por favor tente novamente";
+    return;
+}
     cout<<endl<<"Agora por favor digite sua entrada: ";
     cin>>entrada;
      switch (modo){
@@ -574,9 +696,9 @@ cin>>tipo_entradaB;
         break;
     
     }
+
+
 }
-
-
 
 // conversãoes E MENU da letra C do menu  conversor EM  CIMA
 //=================================================================================================================================================
