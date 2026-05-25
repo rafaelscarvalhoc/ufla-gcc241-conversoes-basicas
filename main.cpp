@@ -446,6 +446,147 @@ void converter_para_decimal(){
 //=================================================================================================================================================
 
 
+// conversãoes E MENU da letra C do menu  conversor EM  BAIXO
+//=================================================================================================================================================
+//=================================================================================================================================================
+//=================================================================================================================================================
+//=================================================================================================================================================
+//=================================================================================================================================================
+//=================================================================================================================================================
+
+void binario_octa (string entrada, char tipo_entradaA){
+int posicao_ponto = -1; 
+string inteiro, fracao; 
+bool e_fracao=false;
+
+for (int i=0; i< entrada.length(); i++){
+
+    if (entrada[i]== '.' || entrada[i]== ',' ){// lembrar dos ' '
+        posicao_ponto = i;
+        
+    }    
+}
+    if (posicao_ponto == -1) {
+            inteiro = entrada;
+            fracao= "";
+        } 
+    else {
+        inteiro = entrada.substr(0, posicao_ponto); // o substr funciona assim (inicio, tamanho do corte)
+        fracao = entrada.substr(posicao_ponto + 1);
+        e_fracao=true;
+        }
+        // apos separar nossa entrada começamos a conversão
+    if(e_fracao == false){
+    while (inteiro.length() % 3 != 0) {
+        inteiro = "0" + inteiro;
+    }
+    }
+    else{
+
+    }
+    }   
+
+
+void binario_hexa(string entrada, char tipo_entradaB){
+int posicao_ponto = -1; 
+string inteiro, fracao; 
+bool e_fracao=false;
+
+for (int i=0; i< entrada.length(); i++){
+
+    if (entrada[i]== '.' || entrada[i]== ',' ){// lembrar dos ' '
+        posicao_ponto = i;
+    }    
+}
+    if (posicao_ponto == -1) {
+            inteiro = entrada;
+            fracao= "";
+        } 
+    else {
+        inteiro = entrada.substr(0, posicao_ponto); // o substr funciona assim (inicio, tamanho do corte)
+        fracao = entrada.substr(posicao_ponto + 1);
+        e_fracao=true;
+        }
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void converter_bo_bh(){
+
+    char modo, tipo_entradaA, tipo_entradaB;
+    string entrada;
+
+    cout<<"Qual tipo de conversão você deseja utilizar?"<<endl;
+    cout<<"Letra A = Converter binário ↔ octal"<<endl;
+    cout<<"Letra B = binario ↔ hexadecima "<<endl;
+    cin>>modo;
+
+if(modo == 'a'|| modo == 'A'){
+cout<<"Sua entrada e binaria ou octal?"<<endl;
+cout<<"Letra A caso sua entrada seja binaria"<<endl;
+cout<<"Letra B caso sua entrada seja octal"<<endl;
+cin>>tipo_entradaA;
+}
+else if (modo == 'b'|| modo == 'B'){
+cout<<"Sua entrada e binaria ou hexadecimal?"<<endl;
+cout<<"Letra A caso sua entrada seja binaria"<<endl;
+cout<<"Letra B caso sua entrada seja hexadecimal"<<endl;
+cin>>tipo_entradaB;
+}
+
+    cout<<endl<<"Agora por favor digite sua entrada: ";
+    cin>>entrada;
+     switch (modo){
+        case 'a':
+        case 'A':
+
+        binario_octa(entrada, tipo_entradaA);
+        break; 
+
+        case 'b':
+        case 'B':
+
+       binario_hexa(entrada, tipo_entradaB);
+        break;
+
+    default:
+        cout<<endl<<"Opção invalida, por favor tente novamente"<<endl;
+        break;
+    
+    }
+}
+
+
+
+// conversãoes E MENU da letra C do menu  conversor EM  CIMA
+//=================================================================================================================================================
+//=================================================================================================================================================
+//=================================================================================================================================================
+//=================================================================================================================================================
+//=================================================================================================================================================
+//=================================================================================================================================================
+
+
 void conversor(){ 
 
 // função para o usuario escolher qual conversor e de seu desejo 
