@@ -1,6 +1,7 @@
 #include <iostream> 
 #include <cmath>
 #include <string>
+#include <sstream>
 
 using namespace std;
 
@@ -129,7 +130,7 @@ string resultado_decimal_octa= "";
 
 string decimal_hexa(double numero){
 //função pra converter decimal pra hexadecimal. achei que 1000 linhas fazia tudo eu nem terminei o conversor e ja tem umas 300 ;-;
-     int inteiro; 
+    int inteiro; 
     double fracao; 
     bool temFracao;
     int  inteirovt [16], fracaovt [16], i=0;
@@ -217,7 +218,7 @@ void converterdecimal (){
 //=================================================================================================================================================
 //=================================================================================================================================================
 //=================================================================================================================================================
-void  binario_decimal(string entrada){
+string  binario_decimal(string entrada){
 
 int fim_inteiro=0 , potencia_inteiro = 0, potencia_fracao = 0 , digito=0;
 int casa_decimais = 0 ; //trava pra caso passe de 16 casas decimais 
@@ -227,8 +228,9 @@ int posicao_ponto = -1;
 // assim marcando onde se encontra o ponto 
 bool e_binario = true; // isso e pra conferir se o numero se encaixa no binario, ele podendo ser 0 1 , ou . 
 double resultado_decimal = 0.0;
-
-for (int i=0; i< entrada.length(); i++){ //.lenght ele mede quantos caracteres tem a string e me fala o tamanho dela 
+string resultado_binario_decimal ="";
+for (size_t i=0; i< entrada.length(); i++){ //.lenght ele mede quantos caracteres tem a string e me fala o tamanho dela 
+    //size_t serve pra igular o i ao tipo de entrada light pq tava dando erro pq o int poderia ser negativo ja entrada light não
     if (entrada [i] != '0' && entrada [i] != '1'&& entrada [i] != ',' && entrada [i] != '.'){
         e_binario = false;
     }
@@ -238,7 +240,7 @@ for (int i=0; i< entrada.length(); i++){ //.lenght ele mede quantos caracteres t
     }
     }
     if (e_binario == false){
-        cout<< "O numero digitado não pode ser convertido pois o mesmo não faz parte do sistem binario"<<endl;
+        resultado_binario_decimal += "O numero digitado não pode ser convertido pois o mesmo não faz parte do sistem binario. ";
     }
     else {
 
@@ -262,7 +264,7 @@ for (int i=0; i< entrada.length(); i++){ //.lenght ele mede quantos caracteres t
          potencia_fracao = -1;
             for (int k = posicao_ponto + 1; k < entrada.length(); k++) {
                 if (casa_decimais >= 16) {
-                    cout << endl <<"Sua entrada gerou um resultado que ultrapassou 16 casas decimais, causando um truncamento"; // uma pena meu nobre hihi
+                    resultado_binario_decimal += "Sua entrada gerou um resultado que ultrapassou 16 casas decimais, causando um truncamento, contudo o numero antes o travamento era: "; // uma pena meu nobre hihi
                         k = entrada.length(); // truque pra o for parar caso tenha passado
                 }
                 else {
@@ -271,20 +273,22 @@ for (int i=0; i< entrada.length(); i++){ //.lenght ele mede quantos caracteres t
                 potencia_fracao--;
                 casa_decimais++;
                 }
-                
             }
         }
-        cout << "O numero convertido para decimal e: " << resultado_decimal << endl;    
+                ostringstream stream; // para coverter double em stream
+        stream << resultado_decimal;
+        resultado_binario_decimal += stream.str();     
     }
+    return resultado_binario_decimal;
 }
 
 
-void  octal_decimal(string entrada){ // como octal so muda a base o codigo pode ser copiado mudando so a base
+string  octal_decimal(string entrada){ // como octal so muda a base o codigo pode ser copiado mudando so a base
 int fim_inteiro=0 , potencia_inteiro = 0, potencia_fracao = 0 , digito=0, posicao_ponto = -1, casa_decimais = 0; 
 bool e_octal = true;
 double resultado_decimal = 0.0;
-
-for (int i=0; i< entrada.length(); i++){ //.lenght ele mede quantos caracteres tem a string e me fala o tamanho dela 
+string resultado_octal_decimal = "";
+for (size_t i=0; i< entrada.length(); i++){ //.lenght ele mede quantos caracteres tem a string e me fala o tamanho dela 
     if ((entrada [i] < '0' || entrada [i] > '7')&& entrada [i] != ',' && entrada [i] != '.'){ // && significa e || significa ou 
 // mesma logica do diminuir um carcter zero, o programa ja entende as letras e o intervalo delas logo n e presciso "traduzir"
        e_octal = false;
@@ -295,7 +299,7 @@ for (int i=0; i< entrada.length(); i++){ //.lenght ele mede quantos caracteres t
     }
     }
     if (e_octal == false){
-        cout<< "O numero digitado não pode ser convertido pois o mesmo não faz parte do sistem octal"<<endl;
+        resultado_octal_decimal = "O numero digitado não pode ser convertido pois o mesmo não faz parte do sistem octal";
     }
     else {
 
@@ -315,7 +319,7 @@ for (int i=0; i< entrada.length(); i++){ //.lenght ele mede quantos caracteres t
          potencia_fracao = -1;
             for (int k = posicao_ponto + 1; k < entrada.length(); k++) {
                 if (casa_decimais >= 16) {
-                    cout << endl <<"Sua entrada gerou um resultado que ultrapassou o limite de 16 casas decimais, causando um truncamento"; // to sendo sabotado to programando lembrando da musica qual o plural de decimal? decimais decimais
+                    resultado_octal_decimal +="Sua entrada gerou um resultado que ultrapassou o limite de 16 casas decimais, causando um truncamento. Contudo o numero gerado antes do truncamento foi: "; // to sendo sabotado to programando lembrando da musica qual o plural de decimal? decimais decimais
                         k = entrada.length(); 
                 }
                 else {
@@ -327,18 +331,22 @@ for (int i=0; i< entrada.length(); i++){ //.lenght ele mede quantos caracteres t
                 
             }
         }
-        cout << "O numero convertido para decimal e: " << resultado_decimal << endl;    
+       ostringstream stream; // para converter double em stream
+        stream << resultado_decimal;
+        resultado_octal_decimal += stream.str(); 
     }
+    return resultado_octal_decimal;
 }
 
-void hexa_decimal(string entrada){
+string hexa_decimal(string entrada){
 
 int fim_inteiro=0 , potencia_inteiro = 0, potencia_fracao = 0 , digito=0, posicao_ponto = -1, casa_decimais = 0; 
 bool e_hexa = true;
 double resultado_decimal = 0.0;
 char c;
+string resultado_hexa_decimal;
 // Criamos uma condição que diz tudo o que é em hexa
-for (int i=0; i< entrada.length(); i++){ 
+for (size_t i=0; i< entrada.length(); i++){ 
 bool caractere_valido = (entrada[i] >= '0' && entrada[i] <= '9') ||
                         (entrada[i] >= 'A' && entrada[i] <= 'F') ||
                         (entrada[i] >= 'a' && entrada[i] <= 'f') ||
@@ -407,8 +415,11 @@ else if (c >= 'a' && c <= 'f') {
                 
             }
         }
-        cout << "O numero convertido para decimal e: " << resultado_decimal << endl;    
+       ostringstream stream; 
+        stream << resultado_decimal;
+        resultado_hexa_decimal += stream.str();  
     }
+    return resultado_hexa_decimal;
  }
 
 //função para chamar as conversoões de binario octa e hexa
@@ -427,19 +438,21 @@ void converter_para_decimal(){
  switch (escolha){
         case 'a':
         case 'A':
-
-        binario_decimal(entrada); // conta escolhida do usuario
+        
+        cout << "O numero convertido para binario e: "<< binario_decimal(entrada)<<endl;
+         // conta escolhida do usuario
         break; //Para parar o codigo 
 
         case 'b':
         case 'B':
 
-       octal_decimal(entrada);
+        cout << "O numero convertido para octal e: "<< octal_decimal(entrada)<<endl;
+      
         break;
 
         case 'c':
         case 'C':
-        hexa_decimal(entrada);
+       cout << "O numero convertido para decimal e: "<< hexa_decimal(entrada)<<endl;
         break;
 
     default:
@@ -475,7 +488,7 @@ string inteiro, fracao;
 bool e_fracao=false;
 string tabela_binario[] = {"000", "001", "010", "011", "100", "101", "110", "111"};
 string resultado= "";
-for (int i=0; i< entrada.length(); i++){
+for (size_t i=0; i< entrada.length(); i++){
 
     if (entrada[i]== '.' || entrada[i]== ',' ){// lembrar dos ' '
         posicao_ponto = i;
@@ -508,7 +521,7 @@ if(e_fracao){
 cout << "Resultado em Octal: ";
 
         // Passo 2: Fatiar e traduzir a parte inteira (pulando de 3 em 3)
-        for (int i = 0; i < inteiro.length(); i += 3) {
+        for (size_t i = 0; i < inteiro.length(); i += 3) {
             string grupo = inteiro.substr(i, 3);
             for (int j = 0; j < 8; j++) {
                 if (tabela_binario[j] == grupo){
@@ -523,7 +536,7 @@ cout << "Resultado em Octal: ";
         if (e_fracao) {
             cout << ".";
             resultado += ".";
-            for (int i = 0; i < fracao.length(); i += 3) {
+            for (size_t i = 0; i < fracao.length(); i += 3) {
                 string grupo = fracao.substr(i, 3);
                 for (int j = 0; j < 8; j++) {
                     if (tabela_binario[j] == grupo){
@@ -540,7 +553,7 @@ cout << "Resultado em Octal: ";
 
         cout << "Resultado em Binario: ";
 
-        for (int i = 0; i < inteiro.length(); i++) {
+        for (size_t i = 0; i < inteiro.length(); i++) {
             int indice = inteiro[i] - '0'; 
             cout << tabela_binario[indice];
             resultado += tabela_binario[indice];
@@ -549,7 +562,7 @@ cout << "Resultado em Octal: ";
         if (e_fracao) {
             cout << ".";
             resultado += ".";
-            for (int i = 0; i < fracao.length(); i++) {
+            for (size_t i = 0; i < fracao.length(); i++) {
                 int indice = fracao[i] - '0';
                 cout << tabela_binario[indice];
                 resultado += tabela_binario[indice];
@@ -574,7 +587,7 @@ string binario_hexa(string entrada, char tipo_entradaB){
 // basicamente quase igual o de cima so adicionando a conversao de 10=a 11=b etc e mudando o agrupamento de 3 pra 4
 
     // Descobre se tem ponto ou vírgula
-    for (int i = 0; i < entrada.length(); i++){
+    for (size_t i = 0; i < entrada.length(); i++){
         if (entrada[i] == '.' || entrada[i] == ',' ){
             posicao_ponto = i;
         }    
@@ -604,7 +617,7 @@ string binario_hexa(string entrada, char tipo_entradaB){
 
         cout << "Resultado em hexadecimal: ";
 
-        for (int i = 0; i < inteiro.length(); i += 4) {
+        for (size_t i = 0; i < inteiro.length(); i += 4) {
             string grupo = inteiro.substr(i, 4);
             for (int j = 0; j < 16; j++) {
                 if (tabela_binario[j] == grupo){
@@ -623,7 +636,7 @@ string binario_hexa(string entrada, char tipo_entradaB){
         if (e_fracao) {
             cout << ".";
             resultado += ".";
-            for (int i = 0; i < fracao.length(); i += 4) {
+            for (size_t i = 0; i < fracao.length(); i += 4) {
                 string grupo = fracao.substr(i, 4);
                 for (int j = 0; j < 16; j++) {
                     if (tabela_binario[j] == grupo){
@@ -646,7 +659,7 @@ string binario_hexa(string entrada, char tipo_entradaB){
         cout << "Resultado em Binario: ";
 
         //trasforma a parte inteira
-        for (int i = 0; i < inteiro.length(); i++) {
+        for (size_t i = 0; i < inteiro.length(); i++) {
             int indice; 
             char atual = toupper(inteiro[i]); 
 
@@ -663,7 +676,7 @@ string binario_hexa(string entrada, char tipo_entradaB){
         if (e_fracao) {
             cout << ".";
             resultado += ".";
-            for (int i = 0; i < fracao.length(); i++) {
+            for (size_t i = 0; i < fracao.length(); i++) {
                 int indice;
                 char atual = toupper(fracao[i]);
 
@@ -812,7 +825,7 @@ void converter_OH(){
     
     //confere se ele e octal
     if (modo == 'a' || modo == 'A'){
-        for (int i = 0; i < entrada.length(); i++) {
+        for (size_t i = 0; i < entrada.length(); i++) {
             // Se for o ponto ou a vírgula da fração, pula pro próximo caractere
             if (entrada[i] == '.' || entrada[i] == ',') continue;
             
@@ -825,7 +838,7 @@ void converter_OH(){
     }
     // confere se e hexa
     if (modo == 'b' || modo == 'B'){
-        for (int i = 0; i < entrada.length(); i++) {
+        for (size_t i = 0; i < entrada.length(); i++) {
             if (entrada[i] == '.' || entrada[i] == ',') continue;
             
             char atual = toupper(entrada[i]); // Garante que a letra tá em maiúsculo para checar
@@ -929,6 +942,54 @@ void conversor(){
 //==========================================================================================================================
 //==========================================================================================================================
 //==========================================================================================================================
+void calculadora() {
+    int k; // Variável para guardar a quantidade de dígitos/bits
+
+    cout << "=== CALCULADORA DE MAXIMOS ===" << endl;
+    cout << "Digite a quantidade de digitos/bits (k): ";
+    cin >> k;
+
+    // não pode ser bits negativos ou zero
+    if (k <= 0) {
+        cout << "Quantidade invalida! Por favor, digite um numero maior que zero." << endl;
+        return; // Sai da função e volta para o menu
+    }
+
+    // 1. Cálculo para a Base Binária (Base 2)
+    double max_binario_decimal = pow(2, k) - 1;
+    
+    // 2. Cálculo para a Base Octal (Base 8)
+    double max_octal_decimal = pow(8, k) - 1;
+    
+    // 3. Cálculo para a Base Hexadecimal (Base 16)
+    double max_hexa_decimal = pow(16, k) - 1;
+
+    // Agora exibimos os resultados chamando os teus conversores automáticos!
+    cout << endl << "Para " << k << " digitos/bits, os valores maximos sao:" << endl;
+    cout << "--------------------------------------------------" << endl;
+    
+    // Mostra o Binário (Valor em decimal e o número convertido por ti)
+    cout << "Binario: " << decimal_binario(max_binario_decimal) 
+         << " (Equivale a " << max_binario_decimal << " em decimal)" << endl;
+         
+    // Mostra o Octal
+    cout << "Octal: " << decimal_octa(max_octal_decimal) 
+         << " (Equivale a " << max_octal_decimal << " em decimal)" << endl;
+         
+    // Mostra o Hexadecimal
+    cout << "Hexadecimal: " << decimal_hexa(max_hexa_decimal) 
+         << " (Equivale a " << max_hexa_decimal << " em decimal)" << endl;
+    cout << "--------------------------------------------------" << endl;
+}
+// menus em desenvolvimento
+//==========================================================================================================================
+//==========================================================================================================================
+//==========================================================================================================================
+//==========================================================================================================================
+//==========================================================================================================================
+//==========================================================================================================================
+//==========================================================================================================================
+//==========================================================================================================================
 void passo_passo() {
     cout << "\n[Modo Passo a Passo em desenvolvimento...]\n" << endl;
 }
@@ -941,10 +1002,9 @@ void quiz() {
     cout << "\n[Modo Quiz em desenvolvimento...]\n" << endl;
 }
 
-void calculadora() {
-    cout << "\n[Calculadora de Maximos em desenvolvimento...]\n" << endl;
-    // Aqui depois faremos a pergunta: "Quantos bits deseja analisar?"
-}
+
+   
+
 
 // menus em desenvolvimento
 //==========================================================================================================================
