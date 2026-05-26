@@ -454,12 +454,12 @@ void converter_para_decimal(){
 //=================================================================================================================================================
 //=================================================================================================================================================
 
-void binario_octa (string entrada, char tipo_entradaA){
+string binario_octa (string entrada, char tipo_entradaA){
 int posicao_ponto = -1; 
 string inteiro, fracao; 
 bool e_fracao=false;
 string tabela_binario[] = {"000", "001", "010", "011", "100", "101", "110", "111"};
-
+string resultado= "";
 for (int i=0; i< entrada.length(); i++){
 
     if (entrada[i]== '.' || entrada[i]== ',' ){// lembrar dos ' '
@@ -496,22 +496,30 @@ cout << "Resultado em Octal: ";
         for (int i = 0; i < inteiro.length(); i += 3) {
             string grupo = inteiro.substr(i, 3);
             for (int j = 0; j < 8; j++) {
-                if (tabela_binario[j] == grupo) cout << j; // basicamente pega o numero joga na tabela e faz o cout e repete ate acabar
+                if (tabela_binario[j] == grupo){
+                     cout << j; // basicamente pega o numero joga na tabela e faz o cout e repete ate acabar
+            resultado += to_string(j); // to_string pega o numero e trasforma em texto
+                }
             }
         }
+
 
         // Passo 3: Fatiar e traduzir a parte fracionária igual em cima
         if (e_fracao) {
             cout << ".";
+            resultado += ".";
             for (int i = 0; i < fracao.length(); i += 3) {
                 string grupo = fracao.substr(i, 3);
                 for (int j = 0; j < 8; j++) {
-                    if (tabela_binario[j] == grupo) cout << j;
+                    if (tabela_binario[j] == grupo){
+                         cout << j;
+                         resultado += to_string(j);
+                        }
+                    }
                 }
             }
+          cout << endl;
         }
-        cout << endl;
-    }
     else{
 // caso a entrada seja em octal
 
@@ -520,20 +528,25 @@ cout << "Resultado em Octal: ";
         for (int i = 0; i < inteiro.length(); i++) {
             int indice = inteiro[i] - '0'; 
             cout << tabela_binario[indice];
+            resultado += tabela_binario[indice];
         }
 
         if (e_fracao) {
             cout << ".";
+            resultado += ".";
             for (int i = 0; i < fracao.length(); i++) {
                 int indice = fracao[i] - '0';
                 cout << tabela_binario[indice];
+                resultado += tabela_binario[indice];
             }
         }
         cout << endl;
+
     }
+    return resultado;
 }
 
-void binario_hexa(string entrada, char tipo_entradaB){
+string binario_hexa(string entrada, char tipo_entradaB){
     int posicao_ponto = -1; 
     string inteiro, fracao; 
     bool e_fracao = false;
@@ -541,7 +554,8 @@ void binario_hexa(string entrada, char tipo_entradaB){
         "0000", "0001", "0010", "0011", "0100", "0101", "0110", "0111",
         "1000", "1001", "1010", "1011", "1100", "1101", "1110", "1111"
     };
-    string letras = "ABCDEF"; 
+    string letras = "ABCDEF";
+    string resultado= ""; 
 // basicamente quase igual o de cima so adicionando a conversao de 10=a 11=b etc e mudando o agrupamento de 3 pra 4
 
     // Descobre se tem ponto ou vírgula
@@ -579,20 +593,33 @@ void binario_hexa(string entrada, char tipo_entradaB){
             string grupo = inteiro.substr(i, 4);
             for (int j = 0; j < 16; j++) {
                 if (tabela_binario[j] == grupo){
-                    if (j < 10) cout << j;
-                    else cout << letras[j - 10];
+                    if (j < 10){
+                    cout << j;
+                        resultado += to_string(j);
+                    }
+                    else { 
+                    cout << letras[j - 10];
+                    resultado += letras[j - 10];
+                    }
                 }
             }
         }
 
         if (e_fracao) {
             cout << ".";
+            resultado += ".";
             for (int i = 0; i < fracao.length(); i += 4) {
                 string grupo = fracao.substr(i, 4);
                 for (int j = 0; j < 16; j++) {
                     if (tabela_binario[j] == grupo){
-                        if (j < 10) cout << j;
-                        else cout << letras[j - 10];
+                        if (j < 10){
+                            cout << j;
+                            resultado += to_string(j);
+                        }
+                        else {
+                            cout << letras[j - 10]; 
+                            resultado += letras[j - 10];
+                        }
                     }
                 }
             }
@@ -614,11 +641,13 @@ void binario_hexa(string entrada, char tipo_entradaB){
                 indice = atual - 'A' + 10;
             }
             cout << tabela_binario[indice];
+            resultado += tabela_binario[indice];
         } 
 
         // trasforma a parte fracionada 
         if (e_fracao) {
             cout << ".";
+            resultado += ".";
             for (int i = 0; i < fracao.length(); i++) {
                 int indice;
                 char atual = toupper(fracao[i]);
@@ -629,10 +658,12 @@ void binario_hexa(string entrada, char tipo_entradaB){
                     indice = atual - 'A' + 10;
                 }
                 cout << tabela_binario[indice];
+                resultado += tabela_binario[indice];
             }
         }
         cout << endl;
     }
+    return resultado;
 }
 
 
@@ -709,6 +740,121 @@ else{
 //=================================================================================================================================================
 
 
+// conversãoes E MENU da letra D do menu  conversor EM  baixo
+//=================================================================================================================================================
+//=================================================================================================================================================
+//=================================================================================================================================================
+//=================================================================================================================================================
+//=================================================================================================================================================
+//=======================================================
+string octal_hexa(string entrada){
+string conversao, resultado_final;
+
+// primeiro octal para binario
+conversao = binario_octa ( entrada, 'B');
+//depois binario pra hexa
+resultado_final = binario_hexa(conversao, 'A');
+
+cout<<"Seu resultado final e: ";
+
+return resultado_final;
+
+
+}
+
+string hexa_octal(string entrada){
+string conversao, resultado_final;
+
+// Primeiro hexa pra binario
+conversao = binario_hexa ( entrada, 'B');
+//depois binario pra octa
+resultado_final = binario_octa(conversao, 'A');
+
+cout<<"Seu resultado final e: ";
+
+return resultado_final;
+
+
+}
+
+
+void converter_OH(){
+
+    char modo, confere;
+    string entrada;
+
+    cout<<"Qual tipo de entrada você deseja utilizar?"<<endl;
+    cout<<"Letra A = octal"<<endl;
+    cout<<"Letra B = hexadecima "<<endl;
+    cin>>modo;
+    
+    if (modo != 'A' && modo != 'a' && modo != 'B' && modo != 'b'){
+        cout<<"Modo invalido por favor tente novamente: ";
+        return; //como a função e void ela n tem retorno ent ela volta pro menu principal
+    }
+    cout<<"Agora diga a sua entrada: ";
+    cin>> entrada; 
+    
+    //confere se ele e octal
+    if (modo == 'a' || modo == 'A'){
+        for (int i = 0; i < entrada.length(); i++) {
+            // Se for o ponto ou a vírgula da fração, pula pro próximo caractere
+            if (entrada[i] == '.' || entrada[i] == ',') continue;
+            
+            // Se não estiver entre '0' e '7', está errado
+            if (entrada[i] < '0' || entrada[i] > '7'){
+                cout << "Seu numero nao e octal ou nao e suportado pelo programa." << endl;
+                return;
+            }
+        }
+    }
+    // confere se e hexa
+    if (modo == 'b' || modo == 'B'){
+        for (int i = 0; i < entrada.length(); i++) {
+            if (entrada[i] == '.' || entrada[i] == ',') continue;
+            
+            char atual = toupper(entrada[i]); // Garante que a letra tá em maiúsculo para checar
+            
+            // Checa se o caractere NÃO é um número de 0-9 E TAMBÉM NÃO é uma letra de A-F
+            if ( !(atual >= '0' && atual <= '9') && !(atual >= 'A' && atual <= 'F') ) {
+                 cout << "Seu numero nao e hexadecimal ou nao e suportado pelo programa." << endl;
+                 return;
+            }
+        }
+     }
+  
+    switch (modo){
+        case 'a':
+        case 'A':
+
+        octal_hexa(entrada); // conta escolhida do usuario
+        break; //Para parar o codigo 
+
+        case 'b':
+        case 'B':
+
+       hexa_octal(entrada);
+        break;
+
+       default:
+       cout<<"Opção invalida, por favor tente novamente";
+       return;
+        break;
+    }
+}
+
+
+
+// conversãoes E MENU da letra D do menu  conversor EM  cima
+//=================================================================================================================================================
+//=================================================================================================================================================
+//=================================================================================================================================================
+//=================================================================================================================================================
+//=================================================================================================================================================
+//=================================================================================================================================================
+
+
+
 void conversor(){ 
 
 // função para o usuario escolher qual conversor e de seu desejo 
@@ -759,10 +905,41 @@ void conversor(){
         break;
     }
 }
+// menus em desenvolvimento
+//==========================================================================================================================
+//==========================================================================================================================
+//==========================================================================================================================
+//==========================================================================================================================
+//==========================================================================================================================
+//==========================================================================================================================
+//==========================================================================================================================
+//==========================================================================================================================
+void passo_passo() {
+    cout << "\n[Modo Passo a Passo em desenvolvimento...]\n" << endl;
+}
 
+void batch() {
+    cout << "\n[Modo Batch em desenvolvimento...]\n" << endl;
+}
 
+void quiz() {
+    cout << "\n[Modo Quiz em desenvolvimento...]\n" << endl;
+}
 
+void calculadora() {
+    cout << "\n[Calculadora de Maximos em desenvolvimento...]\n" << endl;
+    // Aqui depois faremos a pergunta: "Quantos bits deseja analisar?"
+}
 
+// menus em desenvolvimento
+//==========================================================================================================================
+//==========================================================================================================================
+//==========================================================================================================================
+//==========================================================================================================================
+//==========================================================================================================================
+//==========================================================================================================================
+//==========================================================================================================================
+//==========================================================================================================================
 
 void menu_principal(){
 // função do menu principal, void pq não prescisa retornar valor pra main e sim chamar outras funções
