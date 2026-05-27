@@ -3,6 +3,7 @@
 #include <cmath>
 #include <string>
 #include <sstream>
+#include <cctype>
 
 using namespace std;
 
@@ -149,7 +150,7 @@ string decimal_hexa(double numero){
      } else {
 
     // trasformar em hexa a parte inteira
-    while (inteiro>0.00001){
+    while (inteiro>0 && i < 64){
         inteirovt[i] = inteiro%16;
         inteiro = inteiro/16;
         i++;
@@ -444,7 +445,6 @@ if(e_fracao){
             string grupo = inteiro.substr(i, 3);
             for (int j = 0; j < 8; j++) {
                 if (tabela_binario[j] == grupo){
-                     cout << j; // basicamente pega o numero joga na tabela e faz o cout e repete ate acabar
             resultado += to_string(j); // to_string pega o numero e trasforma em texto
                 }
             }
@@ -459,7 +459,6 @@ if(e_fracao){
                 string grupo = fracao.substr(i, 3);
                 for (int j = 0; j < 8; j++) {
                     if (tabela_binario[j] == grupo){
-                         cout << j;
                          resultado += to_string(j);
                         }
                     }
@@ -470,7 +469,6 @@ if(e_fracao){
 // caso a entrada seja em octal
         for (size_t i = 0; i < inteiro.length(); i++) {
             int indice = inteiro[i] - '0'; 
-            cout << tabela_binario[indice];
             resultado += tabela_binario[indice];
         }
 
@@ -478,7 +476,6 @@ if(e_fracao){
             resultado += ".";
             for (size_t i = 0; i < fracao.length(); i++) {
                 int indice = fracao[i] - '0';
-                cout << tabela_binario[indice];
                 resultado += tabela_binario[indice];
             }
         }

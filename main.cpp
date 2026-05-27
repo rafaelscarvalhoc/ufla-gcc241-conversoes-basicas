@@ -18,11 +18,11 @@ void converterdecimal (){
     cout<< "Insira seu numero em DECIMAL";
     cin>>numero;
     
-    decimal_binario (numero);
-    decimal_octa( numero );
-   decimal_hexa ( numero);
-
+   exibir_resultado_conversao(decimal_binario(numero), "Decimal", "Binario");
+    exibir_resultado_conversao(decimal_octa(numero), "Decimal", "Octal");
+    exibir_resultado_conversao(decimal_hexa(numero), "Decimal", "Hexadecimal");
 }
+
 
 
 
@@ -243,23 +243,26 @@ void conversor(){
 }
 
 
-void menu_calculadora() {
+void calculadora() {
     int k;
 
     cout << "=== CALCULADORA DE MAXIMOS ===" << endl;
     cout << "Digite a quantidade de digitos/bits (k): ";
     cin >> k;
 
-    // Validação obrigatória para não quebrar o programa
+    // Validação pra saber se a entrada e valida
     if (k <= 0) {
         cout << "Quantidade invalida! Por favor, digite um numero maior que zero." << endl;
         return; // Retorna para o menu principal
     }
 
-    
+    // Guardamos o resultado dos cálculos em variáveis do tipo string
     string max_binario = maximo_binario(k);
     string max_octal   = maximo_octal(k);
     string max_hexa    = maximo_hexa(k);
+    
+    //chamada resultado
+    exibir_resultado_calculadora(max_binario, max_octal, max_hexa, k);
 }
 // menus em desenvolvimento
 //==========================================================================================================================
