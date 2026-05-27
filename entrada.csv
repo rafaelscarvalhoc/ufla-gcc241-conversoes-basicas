@@ -1,0 +1,5 @@
+10;decimal;binario
+1010;binario;decimal
+17;decimal;hexa
+1111;binario;octal
+77;octal;decimal

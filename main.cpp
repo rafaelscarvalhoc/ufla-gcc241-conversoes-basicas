@@ -1,9 +1,14 @@
 #include <iostream> 
+#include <fstream>
 #include <cmath>
 #include <string>
 #include <sstream>
 #include <cctype>
+#include <clocale> // para corrigir os assentos do cout
 #include "conversores.h" //conecta a main com os outros conversores
+#include "passo_passo.h" // conecta o passo a passo
+#include <cstdlib> // Para rand
+#include <ctime>   // Para time
 
 using namespace std;
 
@@ -36,31 +41,36 @@ void converter_para_decimal(){
     cout<<"Caso seja octal digite a letra B."<<endl;
     cout<<"Caso seja hexadecimal digite a letra C."<<endl;
     cin>>escolha;
+        cin.ignore(10000, '\n'); // pra caso o usuario digite algo amais que 1 carcter o cin limpe apos ser lido 
+
     cout<< "Agora digite a sua entrada: ";
     cin>>entrada;
+    cin.ignore(10000, '\n'); // pra caso o usuario digite algo amais que 1 carcter o cin limpe apos ser lido 
 
  switch (escolha){
         case 'a':
         case 'A':
         
-        cout << "O numero convertido para binario e: "<< binario_decimal(entrada)<<endl;
+        exibir_resultado_conversao(binario_decimal(entrada), "Binario", "Decimal");
          // conta escolhida do usuario
         break; //Para parar o codigo 
 
         case 'b':
         case 'B':
 
-        cout << "O numero convertido para octal e: "<< octal_decimal(entrada)<<endl;
+        exibir_resultado_conversao(octal_decimal(entrada), "Octal", "Decimal");
       
         break;
 
         case 'c':
         case 'C':
-       cout << "O numero convertido para decimal e: "<< hexa_decimal(entrada)<<endl;
+        exibir_resultado_conversao(hexa_decimal(entrada), "Hexadecimal", "Decimal");
         break;
 
     default:
-        cout<<"Opção invalida, por favor tente novamente";
+        cout<<"Opção invalida, por favor tente novamente"<<endl;
+        cin.clear();           // pra limpar o cin em caso de erro
+        cin.ignore(10000, '\n'); // limpa o resto da sujeira(garantia)
         break;
     }
 }
@@ -83,6 +93,8 @@ cout<<"Letra B caso sua entrada seja octal"<<endl;
 cin>>tipo_entradaA;
     if (tipo_entradaA != 'A' && tipo_entradaA != 'a' && tipo_entradaA != 'B' && tipo_entradaA != 'b'){
         cout <<" Sua escolha não e uma opção. Por favor tente novamente"<<endl;
+                cin.clear();           // pra limpar o cin em caso de erro
+        cin.ignore(10000, '\n'); // limpa o resto da sujeira(garantia)
         return;
     }
 }
@@ -91,32 +103,92 @@ cout<<"Sua entrada e binaria ou hexadecimal?"<<endl;
 cout<<"Letra A caso sua entrada seja binaria"<<endl;
 cout<<"Letra B caso sua entrada seja hexadecimal"<<endl;
 cin>>tipo_entradaB;
+    cin.ignore(10000, '\n'); // pra caso o usuario digite algo amais que 1 carcter o cin limpe apos ser lido 
+
     if (tipo_entradaB != 'A' && tipo_entradaB != 'a' && tipo_entradaB != 'B' && tipo_entradaB != 'b'){
         cout <<" Sua escolha não e uma opção. Por favor tente novamente"<<endl;
+                cin.clear();           // pra limpar o cin em caso de erro
+        cin.ignore(10000, '\n'); // limpa o resto da sujeira(garantia)
         return;
     }
 }
 else{
     cout<<endl<<"Opção invelida, por favor tente novamente";
+            cin.clear();           // pra limpar o cin em caso de erro
+        cin.ignore(10000, '\n'); // limpa o resto da sujeira(garantia)
     return;
 }
     cout<<endl<<"Agora por favor digite sua entrada: ";
     cin>>entrada;
+    
+    if (modo == 'a' || modo == 'A') {
+        if (tipo_entradaA == 'a' || tipo_entradaA == 'A') { // Espera Binário
+            for (size_t i = 0; i < entrada.length(); i++) {
+                if (entrada[i] == '.' || entrada[i] == ',') continue;
+                if (entrada[i] != '0' && entrada[i] != '1') {
+                    cout << "Seu numero nao e binario. Por favor tente novamente." << endl;
+                            cin.clear();           // pra limpar o cin em caso de erro
+        cin.ignore(10000, '\n'); // limpa o resto da sujeira(garantia)
+                    return;
+                }
+            }
+        } else { // Espera Octal
+            for (size_t i = 0; i < entrada.length(); i++) {
+                if (entrada[i] == '.' || entrada[i] == ',') continue;
+                if (entrada[i] < '0' || entrada[i] > '7') {
+                    cout << "Seu numero nao e octal. Por favor tente novamente." << endl;
+                            cin.clear();           // pra limpar o cin em caso de erro
+        cin.ignore(10000, '\n'); // limpa o resto da sujeira(garantia)
+                    return;
+                }
+            }
+        }
+    }
+    else if (modo == 'b' || modo == 'B') {
+        if (tipo_entradaB == 'a' || tipo_entradaB == 'A') { // Espera Binário
+            for (size_t i = 0; i < entrada.length(); i++) {
+                if (entrada[i] == '.' || entrada[i] == ',') continue;
+                if (entrada[i] != '0' && entrada[i] != '1') {
+                    cout << "Seu numero nao e binario. Por favor tente novamente." << endl;
+                            cin.clear();           // pra limpar o cin em caso de erro
+        cin.ignore(10000, '\n'); // limpa o resto da sujeira(garantia)
+                    return;
+                }
+            }
+        } else { // Espera Hexadecimal
+            for (size_t i = 0; i < entrada.length(); i++) {
+                if (entrada[i] == '.' || entrada[i] == ',') continue;
+                char atual = toupper(entrada[i]);
+                if (!(atual >= '0' && atual <= '9') && !(atual >= 'A' && atual <= 'F')) {
+                    cout << "Seu numero nao e hexadecimal. Por favor tente novamente." << endl;
+                            cin.clear();           // pra limpar o cin em caso de erro
+        cin.ignore(10000, '\n'); // limpa o resto da sujeira(garantia)
+                    return;
+                }
+            }
+        }
+    }
      switch (modo){
         case 'a':
-        case 'A':
-
-        binario_octa(entrada, tipo_entradaA);
+        case 'A':{ //este switch em especifico e nescessario criação de {} pq ele cria funções dentro dele então e nescessario isolar pra n dar erro no c++
+            string origem  = (tipo_entradaA == 'a' || tipo_entradaA == 'A') ? "Binario" : "Octal";
+            string destino = (tipo_entradaA == 'a' || tipo_entradaA == 'A') ? "Octal" : "Binario";
+            
+            exibir_resultado_conversao(binario_octa(entrada, tipo_entradaA), origem, destino);
         break; 
-
+        }
         case 'b':
-        case 'B':
-
-       binario_hexa(entrada, tipo_entradaB);
+        case 'B':{
+            string origem  = (tipo_entradaB == 'a' || tipo_entradaB == 'A') ? "Binario" : "Hexadecimal";
+            string destino = (tipo_entradaB == 'a' || tipo_entradaB == 'A') ? "Hexadecimal" : "Binario";
+            
+            exibir_resultado_conversao(binario_hexa(entrada, tipo_entradaB), origem, destino);
         break;
-
+        }
     default:
         cout<<endl<<"Opção invalida, por favor tente novamente"<<endl;
+                cin.clear();           // pra limpar o cin em caso de erro
+        cin.ignore(10000, '\n'); // limpa o resto da sujeira(garantia)
         break;
     
     }
@@ -134,9 +206,12 @@ void converter_OH(){
     cout<<"Letra A = octal"<<endl;
     cout<<"Letra B = hexadecima "<<endl;
     cin>>modo;
-    
+        cin.ignore(10000, '\n'); // pra caso o usuario digite algo amais que 1 carcter o cin limpe apos ser lido 
+
     if (modo != 'A' && modo != 'a' && modo != 'B' && modo != 'b'){
         cout<<"Modo invalido por favor tente novamente: ";
+                cin.clear();           // pra limpar o cin em caso de erro
+        cin.ignore(10000, '\n'); // limpa o resto da sujeira(garantia)
         return; //como a função e void ela n tem retorno ent ela volta pro menu principal
     }
     cout<<"Agora diga a sua entrada: ";
@@ -151,6 +226,8 @@ void converter_OH(){
             // Se não estiver entre '0' e '7', está errado
             if (entrada[i] < '0' || entrada[i] > '7'){
                 cout << "Seu numero nao e octal ou nao e suportado pelo programa." << endl;
+                        cin.clear();           // pra limpar o cin em caso de erro
+        cin.ignore(10000, '\n'); // limpa o resto da sujeira(garantia)
                 return;
             }
         }
@@ -165,6 +242,8 @@ void converter_OH(){
             // Checa se o caractere NÃO é um número de 0-9 E TAMBÉM NÃO é uma letra de A-F
             if ( !(atual >= '0' && atual <= '9') && !(atual >= 'A' && atual <= 'F') ) {
                  cout << "Seu numero nao e hexadecimal ou nao e suportado pelo programa." << endl;
+                         cin.clear();           // pra limpar o cin em caso de erro
+        cin.ignore(10000, '\n'); // limpa o resto da sujeira(garantia)
                  return;
             }
         }
@@ -174,17 +253,19 @@ void converter_OH(){
         case 'a':
         case 'A':
 
-        octal_hexa(entrada); // conta escolhida do usuario
+        exibir_resultado_conversao(octal_hexa(entrada), "Octal", "Hexadecimal"); // conta escolhida do usuario
         break; //Para parar o codigo 
 
         case 'b':
         case 'B':
 
-       hexa_octal(entrada);
+        exibir_resultado_conversao(hexa_octal(entrada), "Hexadecimal", "Octal");
         break;
 
        default:
        cout<<"Opção invalida, por favor tente novamente";
+               cin.clear();           // pra limpar o cin em caso de erro
+        cin.ignore(10000, '\n'); // limpa o resto da sujeira(garantia)
        return;
         break;
     }
@@ -204,6 +285,7 @@ void conversor(){
     cout<<"Letra D = octal ↔ hexadecima "<<endl; //Função converter_OH
     
     cin>>escolha;
+    cin.ignore(10000, '\n'); // pra caso o usuario digite algo amais que 1 carcter o cin limpe apos ser lido 
 
     // Mesmo sistema do menu principal.
     // Assim como no menu principal  seria possivel usar ifs como.
@@ -238,6 +320,8 @@ void conversor(){
         // Trava para caso o usuario escolha uma opção não suportada.
         default:
         cout<<"Opção invalida, por favor tente novamente";
+                cin.clear();           // pra limpar o cin em caso de erro
+        cin.ignore(10000, '\n'); // limpa o resto da sujeira(garantia)
         break;
     }
 }
@@ -253,16 +337,24 @@ void calculadora() {
     // Validação pra saber se a entrada e valida
     if (k <= 0) {
         cout << "Quantidade invalida! Por favor, digite um numero maior que zero." << endl;
+                cin.clear();           // pra limpar o cin em caso de erro
+        cin.ignore(10000, '\n'); // limpa o resto da sujeira(garantia)
         return; // Retorna para o menu principal
     }
-
+    unsigned long long max_decimal;
+if (k == 64) {
+        max_decimal = 18446744073709551615ULL; // Teto absoluto
+    } else {
+        max_decimal = (1ULL << k) - 1;         // Fórmula matemática (2^k - 1)
+    }
     // Guardamos o resultado dos cálculos em variáveis do tipo string
+    
     string max_binario = maximo_binario(k);
     string max_octal   = maximo_octal(k);
     string max_hexa    = maximo_hexa(k);
     
     //chamada resultado
-    exibir_resultado_calculadora(max_binario, max_octal, max_hexa, k);
+    exibir_resultado_calculadora(to_string(max_decimal),max_binario, max_octal, max_hexa, k);
 }
 // menus em desenvolvimento
 //==========================================================================================================================
@@ -274,12 +366,108 @@ void calculadora() {
 //==========================================================================================================================
 //==========================================================================================================================
 void passo_passo() {
-    cout << "\n[Modo Passo a Passo em desenvolvimento...]\n" << endl;
+   passo_passo_arquivo();
 }
 
 void batch() {
-    cout << "\n[Modo Batch em desenvolvimento...]\n" << endl;
+
+    ifstream entrada("entrada.csv");
+    ofstream saida("saida.csv");
+
+    string valor;
+    string origem;
+    string destino;
+
+    string resultado;
+
+    if(!entrada){
+
+        cout << "Erro ao abrir entrada.csv" << endl;
+        return;
+    }
+
+    while(
+
+        getline(entrada, valor, ';') &&
+        getline(entrada, origem, ';') &&
+        getline(entrada, destino)
+
+    ){
+
+        resultado = "Conversao nao suportada";
+
+        if(origem == "decimal" && destino == "binario"){
+
+            resultado = decimal_binario(stod(valor));
+        }
+
+        else if(origem == "decimal" && destino == "octal"){
+
+            resultado = decimal_octa(stod(valor));
+        }
+
+        else if(origem == "decimal" && destino == "hexa"){
+
+            resultado = decimal_hexa(stod(valor));
+        }
+
+        else if(origem == "binario" && destino == "decimal"){
+
+            resultado = binario_decimal(valor);
+        }
+
+        else if(origem == "octal" && destino == "decimal"){
+
+            resultado = octal_decimal(valor);
+        }
+
+        else if(origem == "hexa" && destino == "decimal"){
+
+            resultado = hexa_decimal(valor);
+        }
+
+        else if(origem == "binario" && destino == "octal"){
+
+            resultado = binario_octa(valor, 'A');
+        }
+
+        else if(origem == "octal" && destino == "binario"){
+
+            resultado = binario_octa(valor, 'B');
+        }
+
+        else if(origem == "binario" && destino == "hexa"){
+
+            resultado = binario_hexa(valor, 'A');
+        }
+
+        else if(origem == "hexa" && destino == "binario"){
+
+            resultado = binario_hexa(valor, 'B');
+        }
+
+        else if(origem == "octal" && destino == "hexa"){
+
+            resultado = octal_hexa(valor);
+        }
+
+        else if(origem == "hexa" && destino == "octal"){
+
+            resultado = hexa_octal(valor);
+        }
+
+        saida << valor << ";"
+              << origem << ";"
+              << resultado << ";"
+              << destino << endl;
+    }
+
+    entrada.close();
+    saida.close();
+
+    cout << "\nArquivo saida.csv gerado com sucesso!\n";
 }
+
 
 void quiz() {
     cout << "\n[Modo Quiz em desenvolvimento...]\n" << endl;
@@ -314,6 +502,7 @@ void menu_principal(){
      cout<<"Letra E= Calculadora de máximos."<<endl; // tambem fica pra depois ;) 
      
     cin>>escolhaMP;
+    cin.ignore(10000, '\n'); // pra caso o usuario digite algo amais que 1 carcter o cin limpe apos ser lido 
 
     //switch feito para selecionar a função correta de acordo com a escolha do usuario :)
     switch (escolhaMP){
@@ -349,7 +538,9 @@ void menu_principal(){
 
         // Trava para caso o usuario escolha uma opção não suportada.
         default:
-        cout<<"opção invalida, por favor tente novamente";
+        cout<<"Opção invalida, por favor tente novamente"<<endl;
+                cin.clear();           // pra limpar o cin em caso de erro
+        cin.ignore(10000, '\n'); // limpa o resto da sujeira(garantia)
         break;
         
     }
@@ -365,6 +556,7 @@ void inicializador(){
 }  
 
 int main (){
+    setlocale(LC_ALL, "pt_BR.UTF-8"); // pra resolver os assentos do terminal ;)
 // Função principal com opção de reiniciar o codigo
  char continuar;
     // ta fora porque so prescisa aparecer 1 vez

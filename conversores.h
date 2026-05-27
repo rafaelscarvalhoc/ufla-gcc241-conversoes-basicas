@@ -22,7 +22,7 @@ std::string octal_hexa(std::string entrada);
 std::string hexa_octal(std::string entrada);
 
 // modos calculadora de maximos
-// === DECLARAÇÃO DAS FUNÇÕES DE MÁXIMOS ===
+
 std::string maximo_binario(int k);
 std::string maximo_octal(int k);
 std::string maximo_hexa(int k);
@@ -32,7 +32,7 @@ std::string maximo_hexa(int k);
 // ============================================================================
 
 void exibir_resultado_conversao(std::string resultado, std::string base_origem, std::string base_destino);
-void exibir_resultado_calculadora(std::string max_bin, std::string max_oct, std::string max_hex, int k);
+void exibir_resultado_calculadora(std::string max_dec, std::string max_bin, std::string max_oct, std::string max_hex, int k);
 
 // ============================================================================
 // INTERFACE menus e modos que estão na menu.cpp

@@ -9,7 +9,7 @@ using namespace std;
 
 // função pra converter decimal em binario
  string decimal_binario(double numero){
-    int inteiro; 
+    long long inteiro; //tive que subistituir o int por long long devido a calculadora de maximos 
     double fracao; 
     bool temFracao;
     int  inteirovt [64], fracaovt [64], i=0;
@@ -68,7 +68,7 @@ if (temFracao){
 
 //Função para fazer  decimal para octa
 string decimal_octa(double numero ){
- int inteiro; 
+ long long inteiro; //substituição do int porl ong long devido a calculadora
     double fracao; 
     bool temFracao;
 string resultado_decimal_octa= "";
@@ -128,7 +128,7 @@ string resultado_decimal_octa= "";
 
 string decimal_hexa(double numero){
 //função pra converter decimal pra hexadecimal. achei que 1000 linhas fazia tudo eu nem terminei o conversor e ja tem umas 300 ;-;
-    int inteiro; 
+    long long inteiro; // subistituição int por long long devido a calculadora
     double fracao; 
     bool temFracao;
     int  inteirovt [64], fracaovt [64], i=0;
@@ -528,7 +528,6 @@ string binario_hexa(string entrada, char tipo_entradaB){
             } 
         }
 
-        cout << "Resultado em hexadecimal: ";
 
         for (size_t i = 0; i < inteiro.length(); i += 4) {
             string grupo = inteiro.substr(i, 4);
@@ -545,7 +544,6 @@ string binario_hexa(string entrada, char tipo_entradaB){
         }
 
         if (e_fracao) {
-            cout << ".";
             resultado += ".";
             for (size_t i = 0; i < fracao.length(); i += 4) {
                 string grupo = fracao.substr(i, 4);
@@ -637,24 +635,41 @@ return resultado_final;
 // ============================================================================
 
 string maximo_binario(int k) {
-    long long max_decimal = static_cast<long long>(pow(2, k)) - 1;
+    unsigned long long max_decimal;
+    
+    if (k == 64) {
+        max_decimal = 18446744073709551615ULL; // Valor exato de 2^64 - 1 devido ao c++estar dando erro ao ler
+    } else {
+        max_decimal = (1ULL << k) - 1;         // Calcula 2^k - 1 de forma segura ja eliminando o possivel erro
+    }
+    
     return decimal_binario(max_decimal);
 }
 
 // ============================================================================
-// ============================================================================
-// ============================================================================
 
 string maximo_octal(int k) {
-    long long max_decimal = static_cast<long long>(pow(8, k)) - 1;
+    unsigned long long max_decimal;
+    
+    if (k == 64) {
+        max_decimal = 18446744073709551615ULL;
+    } else {
+        max_decimal = (1ULL << k) - 1;
+    }
+    
     return decimal_octa(max_decimal);
 }
 
 // ============================================================================
-// ============================================================================
-// ============================================================================
 
 string maximo_hexa(int k) {
-    long long max_decimal = static_cast<long long>(pow(16, k)) - 1;
+    unsigned long long max_decimal;
+    
+    if (k == 64) {
+        max_decimal = 18446744073709551615ULL;
+    } else {
+        max_decimal = (1ULL << k) - 1;
+    }
+    
     return decimal_hexa(max_decimal);
 }

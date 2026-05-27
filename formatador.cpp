@@ -18,11 +18,12 @@ void exibir_resultado_conversao(string resultado, string base_origem, string bas
     cout << endl;
 }
 // Função que apenas recebe os textos calculados e joga na tela
-void exibir_resultado_calculadora(string max_bin, string max_oct, string max_hex, int k) {
+void exibir_resultado_calculadora(string max_dec, string max_bin, string max_oct, string max_hex, int k) {
     cout << endl;
     cout << "==================================================" << endl;
     cout << "    VALORES MAXIMOS COM " << k << " DIGITOS " << endl;
     cout << "==================================================" << endl;
+    cout << "  Maximo em Binario:     " << max_dec << endl;
     cout << "  Maximo em Binario:     " << max_bin << endl;
     cout << "  Maximo em Octal:       " << max_oct << endl;
     cout << "  Maximo em Hexadecimal: " << max_hex << endl;
