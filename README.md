@@ -1,5 +1,8 @@
 # Sistema de Conversão de Bases Numéricas
 
+Aluno Rafael Souza Carvalho 202610901
+
+
 Este projeto é um projeto feito em C++, desenvolvido usando a ferramenta visual studio code, o programa serve para realizar conversões entre os sistemas de numeração mais utilizados na computação: Decimal, Binário, Octal e Hexadecimal.
 
 ## Funcionalidades
