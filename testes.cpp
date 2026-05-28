@@ -88,6 +88,9 @@ int main() {
 
     cout << "\n====================================================" << endl;
     cout << "   TESTES FINALIZADOS: " << acertos << "/" << totalTestes << " PASSARAM." << endl;
+    if (acertos == totalTestes) {
+    cout << "TODOS OS TESTES PASSARAM COM SUCESSO!" << endl;
+}
     cout << "====================================================" << endl;
 
     return 0;
