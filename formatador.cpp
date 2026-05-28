@@ -23,7 +23,7 @@ void exibir_resultado_calculadora(string max_dec, string max_bin, string max_oct
     cout << "==================================================" << endl;
     cout << "    VALORES MAXIMOS COM " << k << " DIGITOS " << endl;
     cout << "==================================================" << endl;
-    cout << "  Maximo em Binario:     " << max_dec << endl;
+    cout << "  Maximo em Decimal:     " << max_dec << endl;
     cout << "  Maximo em Binario:     " << max_bin << endl;
     cout << "  Maximo em Octal:       " << max_oct << endl;
     cout << "  Maximo em Hexadecimal: " << max_hex << endl;
